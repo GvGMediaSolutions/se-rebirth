@@ -18,6 +18,8 @@ abstract class DB implements Model {
 
   //properties
   private $conn;
+  // mysqli response object
+  private $res;
 
   public function connect(){
     //set property $conn to a new mysqli object

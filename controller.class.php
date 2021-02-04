@@ -12,6 +12,19 @@ abstract class Dbi extends Db implements Controller {
     $this->conn->query($sql);
   }
 
+  protected function prepared_query($sql, $params, $types = ""){
+    //either use set parameter $types or default to prepared string type "s" per parameter $param size
+    $types = $types ?: str_repeat("s", count($params));
+
+    //set property $res to mysqli prepared object
+    $this->res = $this->conn->prepare($sql);
+    //bind to mysqli prepared object
+    //E.G. - bind_param("sib", ["String", 153, True]);
+    $this->res->bind_param($types, ...$params);
+    //execute bound mysqli prepared object
+    $this->res->execute();
+  }
+
   public function close(){
     $this->conn->close();
   }
@@ -38,6 +51,24 @@ class Create_Table extends Dbi {
 
 }
 
+class Insert extends Dbi {
+  public function __construct($sql, $params = [], $types = ""){
+    $this->sql = $sql;
+    $this->conn = $this->connect();
+    $this->prepared_query($this->sql, $params, $types);
+    $this->close();
+  }
+}
+
+class Update extends Dbi {
+  public function __construct($sql, $params = [], $types = ""){
+    $this->sql = $sql;
+    $this->conn = $this->connect();
+    $this->prepared_query($this->sql, $params, $types);
+    $this->close();
+  }
+}
+
 
 class Drop_Db extends Dbi {
   public function __construct($name){
@@ -58,5 +89,18 @@ class Drop_Table extends Dbi {
   }
 }
 
-$sql = "CREATE TABLE `daily_tips` (`tip_id` int(4) NOT NULL auto_increment, `tip_content` text NOT NULL, PRIMARY KEY  (`tip_id`)) ENGINE=MyISAM;";
-$a = new Create_Table($sql);
+//TO DO: abstract away table name
+//$sql = "CREATE TABLE `daily_tips` (`tip_id` int(4) NOT NULL auto_increment, `tip_content` text NOT NULL, PRIMARY KEY  (`tip_id`)) ENGINE=MyISAM;";
+//$a = mew Create_Table($sql)
+
+//TO DO: abstract away table name
+//$sql = "INSERT INTO `daily_tips` (`tip_id`, `tip_content`) VALUES (?, ?)";
+//$params = array(1, 'To customise your SE experiance, try playing with some of the options on the <b class=b1>Options</b> Page.');
+//$types = "is";
+//$a = new Insert($sql, $params, $types);
+
+//TO DO: abstract away table name
+//$sql = "UPDATE `daily_tips` SET `tip_id`=?, `tip_content`=? WHERE `tip_id`=?";
+//$params = array(2, 'You can change your colour scheme at any time from the options page.<br>There are plenty to choose from.', 1);
+//$types = "isi";
+//$a = new Update($sql, $params, $types);

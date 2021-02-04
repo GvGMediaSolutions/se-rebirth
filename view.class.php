@@ -6,8 +6,6 @@ interface View {
 }
 
 abstract class Endpoint extends Db implements View{
-  // mysqli response object
-  private $res;
   // public access property
   public $data;
 
@@ -91,7 +89,7 @@ class Dbh extends Endpoint {
 $Dbh = new Dbh();
 
 //return a single row from a table
-//associative array Dbh::prepare_select($sql, $params = [], $types = "")
+//associative array Dbh::prepared_select($sql, $params = [], $types = "")
 //echo $Dbh->data['login_id'];
 
 foreach($Dbh->data as $key => $val){
