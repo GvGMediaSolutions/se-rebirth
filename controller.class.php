@@ -89,6 +89,15 @@ class Drop_Table extends Dbi {
   }
 }
 
+class Delete extends Dbi {
+  public function __construct($sql, $params = [], $types = ""){
+    $this->sql = $sql;
+    $this->conn = $this->connect();
+    $this->prepared_query($sql, $params, $types);
+    $this->close();
+  }
+}
+
 //TO DO: abstract away table name
 //$sql = "CREATE TABLE `daily_tips` (`tip_id` int(4) NOT NULL auto_increment, `tip_content` text NOT NULL, PRIMARY KEY  (`tip_id`)) ENGINE=MyISAM;";
 //$a = mew Create_Table($sql)
@@ -104,3 +113,8 @@ class Drop_Table extends Dbi {
 //$params = array(2, 'You can change your colour scheme at any time from the options page.<br>There are plenty to choose from.', 1);
 //$types = "isi";
 //$a = new Update($sql, $params, $types);
+
+//$sql = "DELETE FROM `daily_tips` WHERE `tip_id`=?";
+//$params = array(2);
+//$types = "i";
+//$a = new DELETE($sql, $params, $types);
