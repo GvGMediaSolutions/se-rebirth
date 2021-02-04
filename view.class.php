@@ -6,6 +6,11 @@ interface View {
 }
 
 abstract class Endpoint extends Db implements View{
+
+  const SELECT = "SELECT ";
+  const FROM = " FROM ";
+  const WHERE = " WHERE ";
+  const ORDER_BY = " ORDER BY ";
   // public access property
   public $data;
 
@@ -13,10 +18,11 @@ abstract class Endpoint extends Db implements View{
   protected $params = array();
   protected $types = "";
 
-  protected function sqlize($from, $what = "", $where = ""){
+  protected function sqlize($from, $what = "", $where = "", $by = ""){
     $what = empty($what) ? "*" : $what;
-    $this->sql = "SELECT " . $what . " FROM " . $from;
-    $this->sql .= empty($where) ? "" : " WHERE " . $where;
+    $this->sql = self::SELECT . $what . self::FROM . $from;
+    $this->sql .= empty($where) ? "" : self::WHERE . $where;
+    $this->sql .= empty($by) ? "" : self::ORDER_BY . $by;
     return $this->sql;
   }
 
@@ -52,18 +58,14 @@ class Dbh extends Endpoint {
   protected $from;
   protected $what = "";
   protected $where = "";
+  protected $by = "";
 
   public function __construct(){
     //set property $conn to returned mysqli object through Db::connect() call
     $this->conn = $this->connect();
 
     //set property $sql to assembled sql statement
-    $this->sql = $this->sqlize($this->from, $this->what, $this->where);
-
-    //set property $res to mysqli response object
-
-    //SYNTAX: query proxy method
-    //$this->res = $this->query($this->sql);
+    $this->sql = $this->sqlize($this->from, $this->what, $this->where, $this->by);
 
     //SYNTAX: prepared statement proxy method
     $this->res = $this->query($this->sql, $this->params, $this->types);
@@ -79,17 +81,18 @@ class Dbh extends Endpoint {
 class Users extends Dbh {
   public function __construct(){
     $this->from = "user_accounts";
+    $this->by = "login_name DESC";
     parent::__construct();
   }
 }
 
 class User extends Dbh {
   public function __construct($login_id){
-    $this->params = array($login_id);
-    $this->types = "i";
     $this->from = "user_accounts";
     $this->what = "*";
     $this->where = "login_id=?";
+    $this->params = array($login_id);
+    $this->types = "i";
     parent::__construct();
   }
 }
