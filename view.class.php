@@ -9,33 +9,22 @@ abstract class Endpoint extends Db implements View{
   // public access property
   public $data;
 
-  protected function query($sql){
+  protected $sql;
+  protected $params = array();
+  protected $types = "";
+
+  protected function sqlize($from, $what = "", $where = ""){
+    $what = empty($what) ? "*" : $what;
+    $this->sql = "SELECT " . $what . " FROM " . $from;
+    $this->sql .= empty($where) ? "" : " WHERE " . $where;
+    return $this->sql;
+  }
+
+  protected function query($sql, $params = [], $types = ""){
     // set property $res to mysqli response object
-    $this->res = $this->conn->query($sql);
+    $this->res = (!empty($params) && !empty($types)) ? $this->prepared_query($sql, $params, $types)->get_result() : $this->conn->query($sql);
 
-    //return mysqli response object
     return $this->res;
-  }
-
-  protected function prepared_query($sql, $params, $types = ""){
-    //either use set parameter $types or default to prepared string type "s" per parameter $param size
-    $types = $types ?: str_repeat("s", count($params));
-
-    //set property $res to mysqli prepared object
-    $this->res = $this->conn->prepare($sql);
-    //bind to mysqli prepared object
-    //E.G. - bind_param("sib", ["String", 153, True]);
-    $this->res->bind_param($types, ...$params);
-    //execute bound mysqli prepared object
-    $this->res->execute();
-
-    //return executed mysqli prepared object
-    return $this->res;
-  }
-
-  protected function prepared_select($sql, $params = [], $types = ""){
-    //return mysqli response object
-    return $this->prepared_query($sql, $params, $types)->get_result();
   }
 
   protected function format(){
@@ -60,14 +49,16 @@ abstract class Endpoint extends Db implements View{
 }
 
 class Dbh extends Endpoint {
-  //sql query SELECT statement
-  private $sql = "SELECT * FROM user_accounts";
-  //sql prepared SELECT statement
-  private $sql2 = "SELECT * FROM user_accounts WHERE login_id=? AND login_name=?";
+  protected $from;
+  protected $what = "";
+  protected $where = "";
 
   public function __construct(){
     //set property $conn to returned mysqli object through Db::connect() call
     $this->conn = $this->connect();
+
+    //set property $sql to assembled sql statement
+    $this->sql = $this->sqlize($this->from, $this->what, $this->where);
 
     //set property $res to mysqli response object
 
@@ -75,7 +66,7 @@ class Dbh extends Endpoint {
     //$this->res = $this->query($this->sql);
 
     //SYNTAX: prepared statement proxy method
-    $this->res = $this->prepared_select($this->sql2, [1, 'Admin'], "is");
+    $this->res = $this->query($this->sql, $this->params, $this->types);
 
     //set public $data property to either associative array or multi-dimension if mysqli result num_rows == 1
     $this->data = $this->res->num_rows == 1 ? $this->res->fetch_assoc() : $this->format();
@@ -85,29 +76,37 @@ class Dbh extends Endpoint {
 
 }
 
-//create new Dbh object
-$Dbh = new Dbh();
-
-//return a single row from a table
-//associative array Dbh::prepared_select($sql, $params = [], $types = "")
-//echo $Dbh->data['login_id'];
-
-foreach($Dbh->data as $key => $val){
-  echo $key . ": " . $val . "<br>";
+class Users extends Dbh {
+  public function __construct(){
+    $this->from = "user_accounts";
+    parent::__construct();
+  }
 }
 
+class User extends Dbh {
+  public function __construct($login_id){
+    $this->params = array($login_id);
+    $this->types = "i";
+    $this->from = "user_accounts";
+    $this->what = "*";
+    $this->where = "login_id=?";
+    parent::__construct();
+  }
+}
 
-//return entire table
-//multi-dimensional array Dbh::query($sql)
-//echo $Dbh->data[0]['login_name'];
+$user = new User(1);
 
-//iterate over each index of multi-dimensional array
-/*
-for($i=0; $i<count($Dbh->data); $i++){
+foreach($user->data as $key => $val){
+  echo $key . ": " . $val . "<br>";
+}
+echo "<br>";
+
+$users = new Users();
+
+for($i=0; $i<count($users->data); $i++){
   //$Dbh->data[$i][...]
-  foreach($Dbh->data[$i] as $key => $val){
+  foreach($users->data[$i] as $key => $val){
     echo $key . ": " . $val . "<br>";
   }
   echo "<br>";
 }
-*/

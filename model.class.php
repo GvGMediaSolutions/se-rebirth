@@ -28,4 +28,20 @@ abstract class DB implements Model {
     //pass the object
     return $this->conn;
   }
+
+  protected function prepared_query($sql, $params = [], $types = ""){
+    //either use set parameter $types or default to prepared string type "s" per parameter $param size
+    $types = $types ?: str_repeat("s", count($params));
+
+    //set property $res to mysqli prepared object
+    $this->res = $this->conn->prepare($sql);
+    //bind to mysqli prepared object
+    //E.G. - bind_param("sib", ["String", 153, True]);
+    $this->res->bind_param($types, ...$params);
+    //execute bound mysqli prepared object
+    $this->res->execute();
+
+    return $this->res;
+  }
+
 }

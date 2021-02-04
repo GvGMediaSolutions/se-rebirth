@@ -1,4 +1,5 @@
 <?php
+//TO DO: STILL GOT WORK TO DO HERE
 include_once 'model.class.php';
 
 interface Controller {
@@ -10,19 +11,6 @@ abstract class Dbi extends Db implements Controller {
 
   protected function query($sql){
     $this->conn->query($sql);
-  }
-
-  protected function prepared_query($sql, $params, $types = ""){
-    //either use set parameter $types or default to prepared string type "s" per parameter $param size
-    $types = $types ?: str_repeat("s", count($params));
-
-    //set property $res to mysqli prepared object
-    $this->res = $this->conn->prepare($sql);
-    //bind to mysqli prepared object
-    //E.G. - bind_param("sib", ["String", 153, True]);
-    $this->res->bind_param($types, ...$params);
-    //execute bound mysqli prepared object
-    $this->res->execute();
   }
 
   public function close(){
@@ -109,10 +97,10 @@ class Delete extends Dbi {
 //$a = new Insert($sql, $params, $types);
 
 //TO DO: abstract away table name
-//$sql = "UPDATE `daily_tips` SET `tip_id`=?, `tip_content`=? WHERE `tip_id`=?";
-//$params = array(2, 'You can change your colour scheme at any time from the options page.<br>There are plenty to choose from.', 1);
-//$types = "isi";
-//$a = new Update($sql, $params, $types);
+$sql = "UPDATE `daily_tips` SET `tip_id`=?, `tip_content`=? WHERE `tip_id`=?";
+$params = array(2, 'You can change your colour scheme at any time from the options page.<br>There are plenty to choose from.', 1);
+$types = "isi";
+$a = new Update($sql, $params, $types);
 
 //$sql = "DELETE FROM `daily_tips` WHERE `tip_id`=?";
 //$params = array(2);
