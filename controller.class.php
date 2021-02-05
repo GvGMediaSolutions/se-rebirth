@@ -33,7 +33,7 @@ class Dbi extends Endpoint {
     $this->conn = $this->connect();
     $this->sql = $do . $on . $what . $where;
     echo $this->sql;
-    $this->query($this->sql);
+    $this->query($this->sql, $this->params, $this->types);
     $this->close();
   }
 }
@@ -62,9 +62,9 @@ class Insert extends Dbi {
     $this->do = "INSERT INTO ";
     $this->on = "`" . $on . "`";
     $this->what = " (`tip_id`, `tip_content`)";
-    $this->where = " VALUES (1, 'To customise your SE experiance, try playing with some of the options on the <b class=b1>Options</b> Page.')";
-    //$this->params = array(1, 'To customise your SE experiance, try playing with some of the options on the <b class=b1>Options</b> Page.');
-    //$this->types = "is";
+    $this->where = " VALUES (?, ?)";
+    $this->params = array(1, 'To customise your SE experiance, try playing with some of the options on the <b class=b1>Options</b> Page.');
+    $this->types = "is";
     parent::__construct($this->do, $this->on, $this->what, $this->where);
   }
 }
@@ -73,10 +73,10 @@ class Update extends Dbi {
   public function __construct($on){
     $this->do = "UPDATE ";
     $this->on = "`" . $on . "`";
-    $this->what = " SET `tip_id`=2, `tip_content`='You can change your colour scheme at any time from the options page.<br>There are plenty to choose from.'";
-    $this->where = " WHERE `tip_id`=1";
-    //$this->params = array(2, 'You can change your colour scheme at any time from the options page.<br>There are plenty to choose from.', 1);
-    //$this->types = "isi";
+    $this->what = " SET `tip_id`=?, `tip_content`=?";
+    $this->where = " WHERE `tip_id`=?";
+    $this->params = array(2, 'You can change your colour scheme at any time from the options page.<br>There are plenty to choose from.', 1);
+    $this->types = "isi";
     parent::__construct($this->do, $this->on, $this->what, $this->where);
   }
 }
@@ -111,10 +111,10 @@ class Delete extends Dbi {
   }
 }
 
-//$a = new Create_Db("stuff");
+
+$a = new Drop_Table("daily_tips");
 //$b = new Create_Table("daily_tips");
-$c = new Insert("daily_tips");
+//$c = new Insert("daily_tips");
 //$d = new Update("daily_tips");
 //$e = new Delete("daily_tips");
 //$f = new Drop_Table("daily_tips");
-//$g = new Drop_Db("stuff");
