@@ -14,10 +14,7 @@ abstract class Endpoint extends Db implements Controller {
   protected $types = "";
 
   protected function query($sql, $params = [], $types = ""){
-    // set property $res to mysqli response object
-    $this->res = (!empty($params) && !empty($types)) ? $this->prepared_query($sql, $params, $types) : $this->conn->query($sql);
-
-    return $this->res;
+    (!empty($params) && !empty($types)) ? $this->prepared_query($sql, $params, $types) : $this->conn->query($sql);
   }
 
   public function close(){
@@ -116,8 +113,8 @@ class Delete extends Dbi {
 
 //$a = new Create_Db("stuff");
 //$b = new Create_Table("daily_tips");
-//$c = new Insert("daily_tips");
+$c = new Insert("daily_tips");
 //$d = new Update("daily_tips");
 //$e = new Delete("daily_tips");
 //$f = new Drop_Table("daily_tips");
-$g = new Drop_Db("stuff");
+//$g = new Drop_Db("stuff");
