@@ -20,8 +20,7 @@ class Server extends Db {
     //$this->delete("daily_tips", "tip_id", array(2));
     //$this->delete("(str)$on", "(str)$where", (array)$params);
 
-    $this->select("user_accounts", "*", array("id", "name"), array(1, "Owner"));
-    echo $this->data[0]['name'];
+    //$this->select("user_accounts", "*", array("id", "name"), array(1, "Owner"));
     //$this->select("(str)$on", "(str)$what", "(array)$where", (array)$params);
 
     // ~/~/~/ FORMATTING ABSTRACTED!
