@@ -202,7 +202,7 @@ abstract class DB implements Mvc {
   public function insert($on, $what = [], $params = []){
     $this->do = "INSERT INTO ";
     $this->on = "`" . $on . "`";
-    $this->what = count($what) > 1 ? "(" . $this->formatInsertWhat($what) . ")" : " (`" . $what[0] . "`)";
+    $this->what = count($what) > 1 ? "(" . $this->formatInsertWhat($what) . ")" : " (" . $what[0] . ")";
     $this->where = " VALUES (" . $this->formatInsertWhere($what) . ")";
     $this->params = $params;
     $this->run();
