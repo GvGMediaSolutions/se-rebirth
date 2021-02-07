@@ -46,32 +46,7 @@ SET NAMES utf8mb4;
 
 $a = new Server();
 $a->drop_table("accounts");
-$a->create_table("accounts", "(`id` int(11) NOT NULL AUTO_INCREMENT, `login_name` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL, `password` varchar(32) NOT NULL, `date_created` varchar(64) NOT NULL, `times_logged_in` int(10), `last_login` varchar(64), `ip_address` varchar(64), `banned` int(1), `status` varchar(32), `session_id` varchar(32), PRIMARY KEY (`id`)) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
-
-/*
-DROP TABLE IF EXISTS
-`accounts`;
-CREATE TABLE `accounts` (
-`id` int(11) NOT NULL
-AUTO_INCREMENT,
-`login_name` varchar(32)
-COLLATE utf8mb4_unicode_ci
-NOT NULL,
-`password` varchar(32) OT
-NULL,
-`date_created` varchar(64)
-OT
-`times_logged_in` int(10)
-`last_login` varchar(64)
-`ip_address` varchar(64)
-`banned` int(1)
-`status` varchar(32)
-`session_id` varchar(32)
-PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT
-CHARSET=utf8mb4
-COLLATE=utf8mb4_unicode_ci;
-*/
+$a->create_table("accounts", "(`id` int(11) NOT NULL AUTO_INCREMENT, `login_name` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL, `password` varchar(32) NOT NULL, `date_created` varchar(64) NOT NULL, `times_logged_in` int(10), `last_login` varchar(64), `ip_address` varchar(64), `banned` int(1), `status` varchar(32), `session_id` varchar(32), `games_joined` int(6), `msg_signature` varchar(255), `tokens` int(11), `player_image_path` varchar(255), `total_forum_posts` int(11), `forum_likes` int(11), `forum_dislikes` int(11), PRIMARY KEY (`id`)) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
 
 
 /* ~/~/~ TEST AREA
