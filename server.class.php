@@ -8,6 +8,8 @@ class Server extends Db {
     //$this->create_table("daily_tips", " (`tip_id` int(4) NOT NULL auto_increment, `tip_content` text NOT NULL, PRIMARY KEY  (`tip_id`)) ENGINE=MyISAM");
     //$this->create_table("(str)$on, "(str)$what");
 
+    // ~/~/~/ FORMATTING ABSTRACTED!
+    
     //$this->update("daily_tips", array("tip_id", "tip_content"), array("tip_id"), array(2, 'You can change your colour scheme at any time from the options page.<br>There are plenty to choose from.', 1));
     //$this->update("(str)$on", "(array)$what", "(array)$where", (array)$params);
 
@@ -23,7 +25,6 @@ class Server extends Db {
     //$this->select("user_accounts", "*", array("id", "name"), array(1, "Owner"));
     //$this->select("(str)$on", "(str)$what", "(array)$where", (array)$params);
 
-    // ~/~/~/ FORMATTING ABSTRACTED!
     //$this->insert("user_accounts", array("id", "name"), array(3, "Test"));
     //$this->insert("(str)$on", "(array)$what", (array)$params);
   }
