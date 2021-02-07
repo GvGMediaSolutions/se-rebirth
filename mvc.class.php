@@ -3,11 +3,11 @@ include_once '../includes/config.inc.php';
 
 interface Mvc {
 	public function connect();
-  public function select($on, $what = "", $where = "", $params = [], $types = "", $by = "");
+  public function select($on, $what = "", $where = [], $params = [], $types = "", $by = "");
   public function create_table($on, $what="");
   public function create_db($on);
-  public function insert($on, $what = "", $where = "", $params = []);
-  public function update($on, $what = "", $where = "", $params = []);
+  public function insert($on, $what = [], $params = []);
+  public function update($on, $what = [], $where = [], $params = []);
   public function drop_db($on);
   public function drop_table($on);
   public function delete($on, $where = "", $params = []);
@@ -143,11 +143,22 @@ abstract class DB implements Mvc {
 
   // ~/~/~/ PUBLIC DATABASE METHODS: CRUD
 
-  public function select($on, $what = "", $where = "", $params = [], $types = "", $by = ""){
+  protected function formatSelectWhere($where){
+    $str = "";
+    for($i=0; $i<count($where); $i++){
+      $str .= $where[$i] . "=?";
+      if($i < count($where)-1){
+        $str .= " AND ";
+      }
+    }
+    return $str;
+  }
+
+  public function select($on, $what = "", $where = [], $params = [], $types = "", $by = ""){
     $what = empty($what) ? "*" : $what;
     $this->do = "SELECT " . $what;
-    $this->on = " FROM " . $on;
-    $this->where = empty($where) ? "" : " WHERE " . $where;
+    $this->on = " FROM `" . $on . "`";
+    $this->where = count($where) > 1 ? " WHERE " . $this->formatSelectWhere($where) : " WHERE " . $where[0] . "=?";
     $this->by = empty($by) ? "" : " ORDER BY " . $this->by;
     $this->params = $params;
     $this->types = $types;
@@ -167,20 +178,64 @@ abstract class DB implements Mvc {
     $this->run();
   }
 
-  public function insert($on, $what = "", $where = "", $params = []){
+  protected function formatInsertWhat($what){
+    $str = "";
+    for($i=0; $i<count($what); $i++){
+      $str .= "`" . $what[$i] . "`";
+      if($i < count($what)-1){
+        $str .= ", ";
+      }
+    }
+    return $str;
+  }
+
+  protected function formatInsertWhere($where){
+    $str = "";
+    for($i=0; $i<count($where); $i++){
+      $str .= "?";
+      if($i < count($where)-1){
+        $str .= ", ";
+      }
+    }
+    return $str;
+  }
+
+  public function insert($on, $what = [], $params = []){
     $this->do = "INSERT INTO ";
     $this->on = "`" . $on . "`";
-    $this->what = " " . $what;
-    $this->where = empty($where) ? "" : " VALUES " . $where;
+    $this->what = count($what) > 1 ? "(" . $this->formatInsertWhat($what) . ")" : " (`" . $what[0] . "`)";
+    $this->where = " VALUES (" . $this->formatInsertWhere($what) . ")";
     $this->params = $params;
     $this->run();
   }
 
-  public function update($on, $what = "", $where = "", $params = []){
+  protected function formatUpdateWhat($what){
+    $str = "";
+    for($i=0; $i<count($what); $i++){
+      $str .= "`" . $what[$i] . "`=?";
+      if($i < count($what)-1){
+        $str .= ", ";
+      }
+    }
+    return $str;
+  }
+
+  protected function formatUpdateWhere($where){
+    $str = "";
+    for($i=0; $i<count($where); $i++){
+      $str .= "`" . $where[$i] . "`=?";
+      if($i < count($where)-1){
+        $str .= ", ";
+      }
+    }
+    return $str;
+  }
+
+  public function update($on, $what = [], $where = [], $params = []){
     $this->do = "UPDATE ";
     $this->on = "`" . $on . "`";
-    $this->what = empty($what) ? "" : " SET " . $what;
-    $this->where = empty($where) ? "" : " WHERE " . $where;
+    $this->what = count($what) > 1 ? " SET " . $this->formatUpdateWhat($what) : " SET `" . $what[0] . "`=?";
+    $this->where = count($where) > 1 ? " WHERE (" . $this->formatUpdateWhere($where) . ")" : " WHERE (`" . $where[0] . "`=?)";
     $this->params = $params;
     $this->run();
   }
@@ -201,7 +256,7 @@ abstract class DB implements Mvc {
     $this->do = "DELETE FROM ";
     $this->on = "`" . $on . "`";
     $this->what = " ";
-    $this->where = empty($where) ? "" : "WHERE " . $where;
+    $this->where = empty($where) ? "" : "WHERE (`" . $where . "`=?)";
     $this->params = $params;
     $this->run();
   }
