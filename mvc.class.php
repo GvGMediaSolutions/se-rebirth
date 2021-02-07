@@ -3,7 +3,7 @@ include_once '../includes/config.inc.php';
 
 interface Mvc {
 	public function connect();
-  public function select($on, $what = "", $where = [], $params = [], $types = "", $by = "");
+  public function select($on, $what = "", $where = [], $params = [], $by = "");
   public function create_table($on, $what="");
   public function create_db($on);
   public function insert($on, $what = [], $params = []);
@@ -154,14 +154,13 @@ abstract class DB implements Mvc {
     return $str;
   }
 
-  public function select($on, $what = "", $where = [], $params = [], $types = "", $by = ""){
+  public function select($on, $what = "", $where = [], $params = [], $by = ""){
     $what = empty($what) ? "*" : $what;
     $this->do = "SELECT " . $what;
     $this->on = " FROM `" . $on . "`";
     $this->where = count($where) > 1 ? " WHERE " . $this->formatSelectWhere($where) : " WHERE " . $where[0] . "=?";
     $this->by = empty($by) ? "" : " ORDER BY " . $this->by;
     $this->params = $params;
-    $this->types = $types;
     $this->run();
   }
 
