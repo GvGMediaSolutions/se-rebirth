@@ -54,3 +54,4 @@ $a->create_table("accounts", "(`id` int(11) NOT NULL AUTO_INCREMENT, `login_name
 $game = new Game();
 $game->destroy();
 $game->makeNew();
+*/
