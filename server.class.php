@@ -33,11 +33,52 @@ class Server extends Db {
   public function makeUser($name){
     $this->insert("user_accounts", "(`name`)", "(?)", array($name));
   }
-}
 
-$env = new Server();
-$env->destroy();
-$env->makeNew();
+}
+/* ~/~/~ TO DO
+SET NAMES utf8;
+SET time_zone = '+00:00';
+SET foreign_key_checks = 0;
+SET sql_mode =
+'NO_AUTO_VALUE_ON_ZERO';
+SET NAMES utf8mb4;
+*/
+
+$a = new Server();
+$a->drop_table("accounts");
+$a->create_table("accounts", "(`id` int(11) NOT NULL AUTO_INCREMENT, `login_name` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL, `password` varchar(32) NOT NULL, `date_created` varchar(64) NOT NULL, `times_logged_in` int(10), `last_login` varchar(64), `ip_address` varchar(64), `banned` int(1), `status` varchar(32), `session_id` varchar(32), PRIMARY KEY (`id`)) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
+
+/*
+DROP TABLE IF EXISTS
+`accounts`;
+CREATE TABLE `accounts` (
+`id` int(11) NOT NULL
+AUTO_INCREMENT,
+`login_name` varchar(32)
+COLLATE utf8mb4_unicode_ci
+NOT NULL,
+`password` varchar(32) OT
+NULL,
+`date_created` varchar(64)
+OT
+`times_logged_in` int(10)
+`last_login` varchar(64)
+`ip_address` varchar(64)
+`banned` int(1)
+`status` varchar(32)
+`session_id` varchar(32)
+PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT
+CHARSET=utf8mb4
+COLLATE=utf8mb4_unicode_ci;
+*/
+
+
+/* ~/~/~ TEST AREA
+
+//$env = new Server();
+//$env->destroy();
+//$env->makeNew();
 /*
 foreach($env->data[0] as $key => $val){
   echo $key . ": " . $val . "<br>";
