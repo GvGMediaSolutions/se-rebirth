@@ -6,14 +6,28 @@ class Server extends Db {
     //$this->create_db(SERVER);
     $this->db = SERVER;
     //$this->create_table("daily_tips", " (`tip_id` int(4) NOT NULL auto_increment, `tip_content` text NOT NULL, PRIMARY KEY  (`tip_id`)) ENGINE=MyISAM");
+    //$this->create_table("(str)$on, "(str)$what");
+
     //$this->insert("daily_tips", "(`tip_id`, `tip_content`)", "(?, ?)", array(1, 'To customise your SE experiance, try playing with some of the options on the <b class=b1>Options</b> Page.'));
+    //$this->insert("(str)$on, "(str)$what", "(str)$where: '?' per index of $params[]", (array)$params);
+
     //$this->update("daily_tips", "`tip_id`=?, `tip_content`=?", "(`tip_id`=?)", array(2, 'You can change your colour scheme at any time from the options page.<br>There are plenty to choose from.', 1));
+    //$this->update("(str)$on", "(str)$what", "(str)$where", (array)$params);
+
     //$this->drop_db(SERVER);
+    //$this->drop_db("(str)$on");
+
     //$this->drop_table("daily_tips");
+    //$this->drop_table("(str)$on");
+
     //$this->delete("daily_tips", "(`tip_id`=?)", array(2));
+    //$this->delete("(str)$on", "(str)$where", (array)$params);
+
     //$this->select("user_accounts", "*", "login_id=? AND login_name=?", array(1, "Admin"));
+    //$this->select("(str)$on", "(str)$what", "(str)$where", (array)$params);
+
     //$this->insert("user_accounts", "(`login_id`, `login_name`)", "(?, ?)", array(3, "Test"));
-    //$this->select("user_accounts", "*");
+    //$this->insert("(str)$on", "(str)$what", "(str)$where: '?' per index of $params[]", (array)$params);
   }
 
   public function destroy(){
