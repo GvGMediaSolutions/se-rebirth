@@ -80,6 +80,9 @@ class Server extends Db {
     for($i=0; $i<count($users->data); $i++){
       if($users->data[$i]['login_name'] == $login_name && $users->data[$i]['password'] == md5($password)){
         $isMatch = true;
+        $timestamp = date('Y-m-d H:i:s');
+        $logCount = !empty($users->data[$i]['times_logged_in']) ? $users->data[$i]['times_logged_in']+1 : 1;
+        $this->update("accounts", array("times_logged_in", "last_login"), array("id"), array($logCount, $timestamp, $users->data[$i]['id']));
         $id = $users->data[$i]['id'];
         $_SESSION['id'] = $users->data[$i]['id'];
         $_SESSION['name'] = $users->data[$i]['login_name'];

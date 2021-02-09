@@ -17,8 +17,8 @@
     }
   }else{
     $out .= $msg . "<br>";
-    $out .= "<form action='" . htmlspecialchars($_SERVER["PHP_SELF"]) . "' method='post'>";
-    $out .= "<input type='text' name='name' placeholder='Username' value='".$name."' autofocus><br>";
+    $out .= "<form action='" . htmlspecialchars($_SERVER["PHP_SELF"]) . "' method='post' required>";
+    $out .= "<input type='text' name='name' placeholder='Username' value='".$name."' autofocus required><br>";
     $out .= "<input type='password' name='pass' placeholder='Password' value=''><br>";
     $out .= "<input type='submit' name='submit'><br>";
     $out .= "</form>";
