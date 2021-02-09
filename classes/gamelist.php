@@ -13,6 +13,7 @@
       if ($val['id'] == $_SESSION['id']) {
           //print_r($val);
           $prnt = '';
+include 'navbar.php';
 $prnt = <<< EOF
 <style>
 td {
