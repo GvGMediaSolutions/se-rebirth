@@ -60,7 +60,7 @@ class Server extends Db {
     if($isAvailable && $isMatch){
       $this->makeUser($login_name, $password);
       $out .= "Registered User: " . $login_name . "<br>";
-      header('Location: login.php?msg='.$out);
+      header('Location: login.php?msg='.$out.'&name='.$login_name);
     }else{
       $out .= (!$isAvailable) ? "User with that name already exists.<br>" : "";
       $out .= (!$isMatch) ? "Passwords do not match.<br>" : "";
@@ -104,11 +104,11 @@ class Users extends Server {
 // ~/~/~/IMPORTANT!!! RESETS ROOT DATABASE RUN ONCE BEFORE ATTEMPTING TO USE ./register.php OR ./login.php.
 // ~/~/~/IMPORTANT: COMMENT ALL 3 CALLS OUT AFTER RUNNING.
 
-$a = new Server();
+//$a = new Server();
 // ~/~/~/ READE ME: Drops ALL game databses and Drops root DATABASE
-$a->destroy();
+//$a->destroy();
 //Creates a brand new root database and creates the necessary tables
-$a->makeNew();
+//$a->makeNew();
 
 //$this->create_table("daily_tips", " (`tip_id` int(4) NOT NULL auto_increment, `tip_content` text NOT NULL, PRIMARY KEY  (`tip_id`)) ENGINE=MyISAM");
 //$this->create_table("(str)$on, "(str)$what");

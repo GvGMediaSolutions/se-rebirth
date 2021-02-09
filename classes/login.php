@@ -2,6 +2,7 @@
   include_once 'server.class.php';
 
   $msg = (isset($_GET['msg'])) ? $_GET['msg'] : "";
+  $name = (isset($_GET['name'])) ? $_GET['name'] : "";
   $out = "";
 
   if(isset($_POST['submit'])){
@@ -16,8 +17,8 @@
   }else{
     $out .= $msg . "<br>";
     $out .= "<form action='" . htmlspecialchars($_SERVER["PHP_SELF"]) . "' method='post'>";
-    $out .= "<input type='text' name='name' placeholder='Username' autofocus><br>";
-    $out .= "<input type='password' name='pass' placeholder='Password'><br>";
+    $out .= "<input type='text' name='name' placeholder='Username' value='".$name."' autofocus><br>";
+    $out .= "<input type='password' name='pass' placeholder='Password' value=''><br>";
     $out .= "<input type='submit' name='submit'></form>";
     $out .= "</form>";
   }
