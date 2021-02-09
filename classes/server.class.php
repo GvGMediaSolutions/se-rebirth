@@ -38,7 +38,7 @@ class Server extends Db {
   public function makeUser($login_name, $password, $status = 0){
     $this->table = "accounts";
     $this->fields = array("login_name", "password", "status");
-    $this->values = array($login_name, md5($password), $status);
+    $this->values = array($login_name, md5(md5($password)), $status);
     $this->insert($this->table, $this->fields, $this->values);
   }
 
@@ -58,12 +58,13 @@ class Server extends Db {
     }
 
     if($isAvailable && $isMatch){
-      $this->makeUser($login_name, md5($password));
+      $this->makeUser($login_name, $password);
       $out .= "Registered User: " . $login_name . "<br>";
       header('Location: login.php?msg='.$out);
     }else{
       $out .= (!$isAvailable) ? "User with that name already exists.<br>" : "";
       $out .= (!$isMatch) ? "Passwords do not match.<br>" : "";
+      header('Location: register.php?msg='.$out);
     }
 
     echo $out;
@@ -76,8 +77,6 @@ class Server extends Db {
     $isMatch = false;
     $out = "";
 
-    echo $password . "<br>";
-
     for($i=0; $i<count($users->data); $i++){
       if($users->data[$i]['login_name'] == $login_name && $users->data[$i]['password'] == md5($password)){
         $isMatch = true;
@@ -86,9 +85,8 @@ class Server extends Db {
       }
     }
 
-      $out .= ($isMatch) ? header('Location: gamelist.php?id='.$id.'&msg=Logged in') : "Please <a href='login.php'>try again</a>.";
-
-    echo $out;
+      $out = (!$isMatch) ? "Please try again." : "";
+      $msg .= ($isMatch) ? header('Location: gamelist.php?id='.$id.'&msg=Logged in') : header('Location: login.php?msg='.$out);
 
   }
 
@@ -103,11 +101,14 @@ class Users extends Server {
 
 }
 
-//$a = new Server();
+// ~/~/~/IMPORTANT!!! RESETS ROOT DATABASE RUN ONCE BEFORE ATTEMPTING TO USE ./register.php OR ./login.php.
+// ~/~/~/IMPORTANT: COMMENT ALL 3 CALLS OUT AFTER RUNNING.
+
+$a = new Server();
 // ~/~/~/ READE ME: Drops ALL game databses and Drops root DATABASE
-//$a->destroy();
+$a->destroy();
 //Creates a brand new root database and creates the necessary tables
-//$a->makeNew();
+$a->makeNew();
 
 //$this->create_table("daily_tips", " (`tip_id` int(4) NOT NULL auto_increment, `tip_content` text NOT NULL, PRIMARY KEY  (`tip_id`)) ENGINE=MyISAM");
 //$this->create_table("(str)$on, "(str)$what");

@@ -1,6 +1,7 @@
 <?php
   include_once 'server.class.php';
 
+  $msg = (isset($_GET['msg'])) ? $_GET['msg'] : "";
   $out = "";
 
   if(isset($_POST['submit'])){
@@ -14,7 +15,8 @@
       $server->registerUser($login_name, $password, $password2);
     }
   }else{
-    $out = "<form action='" . htmlspecialchars($_SERVER["PHP_SELF"]) . "' method='post'>";
+    $out = $msg . "<br>";
+    $out .= "<form action='" . htmlspecialchars($_SERVER["PHP_SELF"]) . "' method='post'>";
     $out .= "<input type='text' name='name' placeholder='Username' autofocus><br>";
     $out .= "<input type='password' name='pass' placeholder='Password'><br>";
     $out .= "<input type='password' name='pass2' placeholder='Password Again'><br>";
