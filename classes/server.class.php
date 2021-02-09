@@ -38,7 +38,7 @@ class Server extends Db {
   public function makeUser($login_name, $password, $status = 0){
     $this->table = "accounts";
     $this->fields = array("login_name", "password", "status");
-    $this->values = array($login_name, $password, $status);
+    $this->values = array($login_name, md5($password), $status);
     $this->insert($this->table, $this->fields, $this->values);
   }
 
@@ -58,12 +58,33 @@ class Server extends Db {
     }
 
     if($isAvailable && $isMatch){
-      $this->makeUser($login_name, $password);
+      $this->makeUser($login_name, md5($password));
       $out .= "Registered User: " . $login_name . "<br>";
+      header('Location: login.php?msg='.$out);
     }else{
       $out .= (!$isAvailable) ? "User with that name already exists.<br>" : "";
       $out .= (!$isMatch) ? "Passwords do not match.<br>" : "";
     }
+
+    echo $out;
+
+  }
+
+  public function loginUser($login_name, $password){
+    $users = new Users();
+    $id=null;
+    $isMatch = false;
+    $out = "";
+
+    for($i=0; $i<count($users->data); $i++){
+      if($users->data[$i]['login_name'] == $login_name && $users->data[$i]['password']){
+        $isMatch = true;
+        $id = $users->data[$i]['id'];
+        break;
+      }
+    }
+
+      $out .= ($isMatch) ? header('Location: gamelist.php?id='.$id.'&msg=Logged in') : "Please <a href='login.php'>try again</a>.";
 
     echo $out;
 
