@@ -76,8 +76,10 @@ class Server extends Db {
     $isMatch = false;
     $out = "";
 
+    echo $password . "<br>";
+
     for($i=0; $i<count($users->data); $i++){
-      if($users->data[$i]['login_name'] == $login_name && $users->data[$i]['password']){
+      if($users->data[$i]['login_name'] == $login_name && $users->data[$i]['password'] == md5($password)){
         $isMatch = true;
         $id = $users->data[$i]['id'];
         break;

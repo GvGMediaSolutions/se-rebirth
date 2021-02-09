@@ -14,7 +14,7 @@
       $server->registerUser($login_name, $password, $password2);
     }
   }else{
-    $out = "<form action='register.php' method='post'>";
+    $out = "<form action='" . htmlspecialchars($_SERVER["PHP_SELF"]) . "' method='post'>";
     $out .= "<input type='text' name='name' placeholder='Username' autofocus><br>";
     $out .= "<input type='password' name='pass' placeholder='Password'><br>";
     $out .= "<input type='password' name='pass2' placeholder='Password Again'><br>";
