@@ -81,12 +81,15 @@ class Server extends Db {
       if($users->data[$i]['login_name'] == $login_name && $users->data[$i]['password'] == md5($password)){
         $isMatch = true;
         $id = $users->data[$i]['id'];
+        $_SESSION['id'] = $users->data[$i]['id'];
+        $_SESSION['name'] = $users->data[$i]['login_name'];
         break;
       }
     }
 
       $out = (!$isMatch) ? "Please try again." : "";
-      $msg .= ($isMatch) ? header('Location: gamelist.php?id='.$id.'&msg=Logged in') : header('Location: login.php?msg='.$out);
+
+      $msg = ($isMatch) ? header('Location: gamelist.php') : header('Location: login.php?msg='.$out);
 
   }
 

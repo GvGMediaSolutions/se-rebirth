@@ -20,8 +20,9 @@
     $out .= "<input type='text' name='name' placeholder='Username' autofocus><br>";
     $out .= "<input type='password' name='pass' placeholder='Password'><br>";
     $out .= "<input type='password' name='pass2' placeholder='Password Again'><br>";
-    $out .= "<input type='submit' name='submit'>";
+    $out .= "<input type='submit' name='submit'><br>";
     $out .= "</form>";
+    $out .= "<a href='login.php'>Login</a>";
   }
 
   echo $out;
