@@ -13,6 +13,11 @@
       if ($val['id'] == $_SESSION['id']) {
           //print_r($val);
           $prnt = '';
+          $img = new Server();
+          $img->select("account_images", "*", array('account_id'), array($val['id']));
+          //echo var_dump($img->data[0]['data']);
+          $encoded_img = (!empty($img->data[0])) ? base64_encode($img->data[0]['data']) : "";
+          $img_tag = (!empty($img->data[0])) ? '<img src="data:image/png;charset=utf8;base64,'.$encoded_img.'" style=width:50px;height: 50px;">' : "";
 include 'navbar.php';
 $prnt = <<< EOF
 <style>
@@ -41,7 +46,7 @@ td {
 <td>FORUM POSTS: <br>{$val['total_forum_posts']}</td>
 <td>LIKES / DISLIKES: <br>{$val['forum_likes']} / {$val['forum_dislikes']}</td>
 </tr>
-<form action='update_account.php' method='post'>
+<form action='update_account.php' method='post' enctype='multipart/form-data'>
 <tr>
 <td colspan='2'>
 Message Signature: <br>
@@ -54,19 +59,20 @@ Message Signature: <br>
 <tr>
 <td>
 ACCOUNT IMAGE: <br>
-<img src="{$val['player_image_path']}">
+{$img_tag}
 </td>
 <td>
 UPLOAD NEW IMAGE: <br>
-<input type='file' name='plyr_img'>
+<input type='file' name='plyr_img' id='plyr_img'>
 </td>
 </tr>
-<tr><td colspan='2'><input type='submit' value='Update Account'><td></tr>
+<tr><td colspan='2'><input type='submit' value='Update Account' name='submit'><td></tr>
 </form>
 </table>
 </div>
 EOF;
 echo $prnt;
+break;
       }
   }
   }

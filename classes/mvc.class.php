@@ -124,7 +124,7 @@ abstract class DB implements Mvc {
       //set property $sql to SQL executable string
       $this->sql = $this->sqlize();
       //just to see
-      //$out = $this->sql . "<br>";
+      $out = $this->sql . "<br>";
       //set property $res to mysqli response obect
       $this->query();
       //set public $data property to either associative array or multi-dimension if mysqli result num_rows == 1
@@ -133,7 +133,7 @@ abstract class DB implements Mvc {
       }
 
       //just to see
-      //echo $out;
+      echo $out;
       //close the connection
       $this->close();
   }
