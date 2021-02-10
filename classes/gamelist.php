@@ -10,7 +10,7 @@
   //print_r($data);
   foreach ($data as $val) {
       //echo print_r($val) . '<br>';
-      if ($val['id'] == $_SESSION['id']) {
+      if ($val['id'] == $_SESSION['id'] && $val['session_id'] == $_SESSION['key']) {
           //print_r($val);
           $prnt = '';
           $img = new Server();
@@ -78,19 +78,9 @@ UPLOAD NEW IMAGE: <br>
 EOF;
 echo $prnt;
 break;
-      }
+    }else{
+      header('Location: login.php');
+    }
   }
-  }
-
-  $out = "";
-  if(isset($_SESSION['id']) && isset($_SESSION['name'])){
-    $id = $_SESSION['id'];
-    $name = $_SESSION['name'];
-
-    $out .= "Logged in as: " . $name." - [".$id."]<br><a href='register.php'>Register</a><br><a href='login.php'>Login</a><br>";
-  }else{
-    header('Location: login.php');
-  }
-
-  echo $out;
+}
 ?>
