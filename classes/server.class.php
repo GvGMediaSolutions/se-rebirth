@@ -23,6 +23,7 @@ class Server extends Db {
     $this->create_db(SERVER);
     $this->db = SERVER;
     $this->makeTableAccounts();
+    $this->makeAccountImagesTable();
   }
 
   public function makeTableAccounts(){
@@ -117,7 +118,7 @@ class Users extends Server {
 // ~/~/~/IMPORTANT!!! RESETS ROOT DATABASE RUN ONCE BEFORE ATTEMPTING TO USE ./register.php OR ./login.php.
 // ~/~/~/IMPORTANT: COMMENT ALL 3 CALLS OUT AFTER RUNNING.
 
-$a = new Server();
+//$a = new Server();
 // ~/~/~/ READE ME: Drops ALL game databses and Drops root DATABASE
 //$a->destroy();
 //Creates a brand new root database and creates the necessary tables
