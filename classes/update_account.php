@@ -13,7 +13,12 @@
       if ($val['id'] == $_SESSION['id']) {
         //get uploaded file blob
         if(isset($_POST['submit'])){
-          if(count($_FILES) > 0){
+          if(isset($_POST['sig']) && !empty($_POST['sig'])){
+            $sig = new Server();
+            $sig->update("accounts", array('msg_signature'), array('id'), array($_POST['sig'], $val['id']));
+          }
+
+          if(count($_FILES) > 0 && !empty($_FILES['plyr_img']['tmp_name'])){
             if(getimagesize($_FILES['plyr_img']['tmp_name'])){
               $server = new Server();
               $server->select("account_images", "*", array('account_id'), array($val['id']));
@@ -27,15 +32,13 @@
               }else{
                 $server->update($table, array('type', 'data'), array('account_id'), $values);
               }
-              header('Location: gamelist.php');
-              //header('Content-type: '.$imageProperties['mime']);
-              //echo $imgData;
             }else{
               echo "not file";
             }
           }else{
-            echo "0 files";
+            header('Location: gamelist.php');
           }
+          header('Location: gamelist.php');
         }
       }
   }

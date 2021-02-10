@@ -18,6 +18,11 @@
           //echo var_dump($img->data[0]['data']);
           $encoded_img = (!empty($img->data[0])) ? base64_encode($img->data[0]['data']) : "";
           $img_tag = (!empty($img->data[0])) ? '<img src="data:image/png;charset=utf8;base64,'.$encoded_img.'" style=width:50px;height: 50px;">' : "";
+          $games_joined = (!empty($val['games_joined'])) ? $val['games_joined'] : 0;
+          $forum_posts = (!empty($val['total_forum_posts'])) ? $val['total_forum_posts'] : 0;
+          $forum_likes = (!empty($val['forum_likes'])) ? $val['forum_likes'] : 0;
+          $forum_dislikes = (!empty($val['forum_dislikes'])) ? $val['forum_dislikes'] : 0;
+          $msg_signature = (!empty($val['msg_signature'])) ? $val['msg_signature'] : "Signature not set.";
 include 'navbar.php';
 $prnt = <<< EOF
 <style>
@@ -40,17 +45,17 @@ td {
 </tr>
 <tr>
 <td>TIMES LOGGED IN: <br>{$val['times_logged_in']}</td>
-<td>GAMES JOINED: <br>{$val['games_joined']}</td>
+<td>GAMES JOINED: <br>{$games_joined}</td>
 </tr>
 <tr>
-<td>FORUM POSTS: <br>{$val['total_forum_posts']}</td>
-<td>LIKES / DISLIKES: <br>{$val['forum_likes']} / {$val['forum_dislikes']}</td>
+<td>FORUM POSTS: <br>{$forum_posts}</td>
+<td>LIKES / DISLIKES: <br>{$forum_likes} / {$forum_dislikes}</td>
 </tr>
 <form action='update_account.php' method='post' enctype='multipart/form-data'>
 <tr>
 <td colspan='2'>
 Message Signature: <br>
-{$val['msg_signature']}
+{$msg_signature}
 <hr>
 <textarea name="sig" rows="4" cols="50" maxlength='255'>
 </textarea>

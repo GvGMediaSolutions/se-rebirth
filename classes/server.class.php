@@ -35,6 +35,13 @@ class Server extends Db {
     $this->makeUser('Test', 'password');
   }
 
+  public function makeAccountImagesTable(){
+    $this->table = "account_images";
+    $str = "( id tinyint(3) NOT NULL AUTO_INCREMENT, type varchar(25) NOT NULL DEFAULT '', data mediumblob NOT NULL, account_id int(8) NOT NULL, PRIMARY KEY (id)) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
+    $this->drop_table($this->table);
+    $this->create_table($this->table, $str);
+  }
+
   public function makeUser($login_name, $password, $status = 0){
     $this->table = "accounts";
     $this->fields = array("login_name", "password", "status");
@@ -110,11 +117,12 @@ class Users extends Server {
 // ~/~/~/IMPORTANT!!! RESETS ROOT DATABASE RUN ONCE BEFORE ATTEMPTING TO USE ./register.php OR ./login.php.
 // ~/~/~/IMPORTANT: COMMENT ALL 3 CALLS OUT AFTER RUNNING.
 
-//$a = new Server();
+$a = new Server();
 // ~/~/~/ READE ME: Drops ALL game databses and Drops root DATABASE
 //$a->destroy();
 //Creates a brand new root database and creates the necessary tables
 //$a->makeNew();
+//$a->makeAccountImagesTable();
 
 //$this->create_table("daily_tips", " (`tip_id` int(4) NOT NULL auto_increment, `tip_content` text NOT NULL, PRIMARY KEY  (`tip_id`)) ENGINE=MyISAM");
 //$this->create_table("(str)$on, "(str)$what");
