@@ -90,7 +90,6 @@ class Server extends Db {
         $isMatch = true;
         $timestamp = date('Y-m-d H:i:s');
         $key = bin2hex(random_bytes(16));
-        echo var_dump($key);
         $logCount = !empty($users->data[$i]['times_logged_in']) ? $users->data[$i]['times_logged_in']+1 : 1;
         $this->update("accounts", array("times_logged_in", "last_login", "session_id"), array("id"), array($logCount, $timestamp, $key, $users->data[$i]['id']));
         $id = $users->data[$i]['id'];
