@@ -1,6 +1,7 @@
 <?php
   include_once 'server.class.php';
   session_start();
+  $isLoggedin = FALSE;
 
   $debug = 1;
   if ($debug) {
@@ -11,6 +12,7 @@
   foreach ($data as $val) {
       //echo print_r($val) . '<br>';
       if ($val['id'] == $_SESSION['id'] && $val['session_id'] == $_SESSION['key']) {
+          $isLoggedin = TRUE;
           //print_r($val);
           $prnt = '';
           $img = new Server();
@@ -78,9 +80,11 @@ UPLOAD NEW IMAGE: <br>
 EOF;
 echo $prnt;
 break;
-    }else{
-      header('Location: login.php');
     }
+  }
+  if(!$isLoggedin){
+    //header('Location: login.php');
+    echo "not";
   }
 }
 ?>

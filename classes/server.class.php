@@ -93,6 +93,7 @@ class Server extends Db {
         $logCount = !empty($users->data[$i]['times_logged_in']) ? $users->data[$i]['times_logged_in']+1 : 1;
         $this->update("accounts", array("times_logged_in", "last_login", "session_id"), array("id"), array($logCount, $timestamp, $key, $users->data[$i]['id']));
         $id = $users->data[$i]['id'];
+        session_unset();
         $_SESSION['id'] = $users->data[$i]['id'];
         $_SESSION['name'] = $users->data[$i]['login_name'];
         $_SESSION['key'] = $key;
