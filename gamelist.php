@@ -28,19 +28,10 @@
 
   $admin_options = '';
   if($val['status'] == 1 || $val['status'] == 2){
-  $admin_options = <<< EOF
-  <tr>
-  <form action='new_game.php' method='post'>
-  <td>Create New Game:<br>Name: <input type='text' name='game_name'><br><input type='submit'></td>
-  </form>
-  EOF;
+  $admin_options = "<tr><form action='new_game.php' method='post'><td>Create New Game:<br>Name: <input type='text' name='game_name'><br><input type='submit'></td></form>";
 
   //NOTICE: Compiles fine on my local environment. Does not deploy
-  $admin_options .= ($val['status'] != 1) ? "" : <<< EOF
-  <form action='server.php' method='post'>
-  <td><input type='submit' name='reset' value='RESET SERVER' onClick='confirm("Are you sure? This cannot be undone.");'></td>
-  </form>
-  EOF;
+  $admin_options .= ($val['status'] != 1) ? "" : "<form action='server.php' method='post'><td><input type='submit' name='reset' value='RESET SERVER' onClick='confirm(\"Are you sure? This cannot be undone.\");'></td></form>";
 
   $admin_options .= "</tr>";
   }
