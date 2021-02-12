@@ -3,6 +3,7 @@ include_once 'mvc.class.php';
 
 class Server extends Db {
   protected $table = "";
+  protected $str = "";
   protected $fields = [];
   protected $values = [];
 
@@ -23,14 +24,16 @@ class Server extends Db {
     $this->create_db(SERVER);
     $this->db = SERVER;
     $this->makeTableAccounts();
-    $this->makeAccountImagesTable();
+    $a = new Server();
+    $a->makeAccountImagesTable();
+    header('Location: login.php?msg=Server has been reset<br>');
   }
 
   public function makeTableAccounts(){
     $this->table = "accounts";
-    $str = "(`id` int(11) NOT NULL AUTO_INCREMENT, `login_name` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL, `password` varchar(32) NOT NULL, `date_created` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6), `times_logged_in` int(10), `last_login` timestamp(6), `ip_address` varchar(64), `banned` int(1), `status` varchar(32), `session_id` varchar(32), `games_joined` int(6), `msg_signature` varchar(255), `tokens` int(11), `player_image_path` varchar(255), `total_forum_posts` int(11), `forum_likes` int(11), `forum_dislikes` int(11), PRIMARY KEY (`id`)) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
+    $this->str = "(`id` int(11) NOT NULL AUTO_INCREMENT, `login_name` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL, `password` varchar(32) NOT NULL, `date_created` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6), `times_logged_in` int(10), `last_login` timestamp(6), `ip_address` varchar(64), `banned` int(1), `status` varchar(32), `session_id` varchar(32), `games_joined` int(6), `msg_signature` varchar(255), `tokens` int(11), `player_image_path` varchar(255), `total_forum_posts` int(11), `forum_likes` int(11), `forum_dislikes` int(11), PRIMARY KEY (`id`)) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
     $this->drop_table($this->table);
-    $this->create_table($this->table, $str);
+    $this->create_table($this->table, $this->str);
     $this->makeUser('Owner', 'password', 1);
     $this->makeUser('Admin', 'password', 2);
     $this->makeUser('Test', 'password');
@@ -38,9 +41,9 @@ class Server extends Db {
 
   public function makeAccountImagesTable(){
     $this->table = "account_images";
-    $str = "( id tinyint(3) NOT NULL AUTO_INCREMENT, type varchar(25) NOT NULL DEFAULT '', data mediumblob NOT NULL, account_id int(8) NOT NULL, PRIMARY KEY (id)) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
+    $this->str = "(`id` tinyint(3) NOT NULL AUTO_INCREMENT, `type` varchar(25) NOT NULL, `data` mediumblob NOT NULL, `account_id` int(8) NOT NULL, PRIMARY KEY (`id`)) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
     $this->drop_table($this->table);
-    $this->create_table($this->table, $str);
+    $this->create_table($this->table, $this->str);
   }
 
   public function makeUser($login_name, $password, $status = 0){
