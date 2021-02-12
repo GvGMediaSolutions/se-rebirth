@@ -118,6 +118,26 @@ class Users extends Server {
 
 }
 
+class User extends Users {
+  public function __construct(){
+    session_start();
+    $isLoggedin = FALSE;
+    $user = FALSE;
+
+    $read = new Users();
+    $data = $read->data;
+
+    foreach($data as $val){
+      if($val['id'] == $_SESSION['id'] && $val['session_id'] == $_SESSION['key']){
+        $isLoggedin = TRUE;
+        $this->data = $val;
+        break;
+      }
+    }
+    $redirect = (!$isLoggedin) ? header('Location: login.php') : '';
+  }
+}
+
 // ~/~/~/IMPORTANT!!! RESETS ROOT DATABASE RUN ONCE BEFORE ATTEMPTING TO USE ./register.php OR ./login.php.
 // ~/~/~/IMPORTANT: COMMENT ALL 3 CALLS OUT AFTER RUNNING.
 
