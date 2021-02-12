@@ -2,6 +2,8 @@
   include_once 'server.class.php';
   $read = new User();
   $val = $read->data;
+  $isOwner = ($val['status'] == 1) ? TRUE : FALSE;
+  $isAdmin = ($val['status'] == 2) ? TRUE : FALSE;
 
   //print_r($val);
   $prnt = '';
@@ -17,11 +19,11 @@
   $msg_signature = (!empty($val['msg_signature'])) ? $val['msg_signature'] : "Signature not set.";
 
   $admin_options = '';
-  if($val['status'] == 1 || $val['status'] == 2){
+  if($isOwner == 1 || $isAdmin == 2){
   $admin_options = "<tr><form action='new_game.php' method='post'><td>Create New Game:<br>Name: <input type='text' name='game_name'><br><input type='submit'></td></form>";
 
   //NOTICE: Compiles fine on my local environment. Does not deploy
-  $admin_options .= ($val['status'] != 1) ? "" : "<form action='server.php' method='post'><td><input type='submit' name='reset' value='RESET SERVER' onClick='confirm(\"Are you sure? This cannot be undone.\");'></td></form>";
+  $admin_options .= (!$isOwner) ? "" : "<form action='server.php' method='post'><td><input type='submit' name='reset' value='RESET SERVER' onClick='confirm(\"Are you sure? This cannot be undone.\");'></td></form>";
 
   $admin_options .= "</tr>";
   }
