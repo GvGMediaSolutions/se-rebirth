@@ -1,17 +1,7 @@
 <?php
   include_once 'server.class.php';
-  session_start();
-  $isLoggedin = FALSE;
-
-  $debug = 1;
-  if ($debug) {
-  $read = new server();
-  $read->select('accounts', '*', array('id'), array($_SESSION['id']));
-  $val = $read->data[0];
-  ($val['id'] == $_SESSION['id'] && $val['session_id'] == $_SESSION['key']) ? $isLoggedin = TRUE : $isLoggedin = FALSE;
-  if(!$isLoggedin){
-    header('Location: login.php');
-  }
+  $read = new User();
+  $val = $read->data;
 
   //print_r($val);
   $prnt = '';
@@ -91,5 +81,4 @@ UPLOAD NEW IMAGE: <br>
 </div>
 EOF;
 echo $prnt;
-}
 ?>
