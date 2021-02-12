@@ -6,26 +6,15 @@ $debug = 1;
 if ($debug)
 {
     $read = new server();
-    $read->select('games');//need to also get accounts
+    $read->select('accounts');//need to also get accounts
     $data = $read->data;
     //print_r($data);
     foreach ($data as $val)
     {
         //echo print_r($val) . '<br>';
-        if ((($val['status'] == 'Admin') || ($val['status'] == 'Owner')) && ($val['session_id'] == $_SESSION['id']))
+        if ((($val['status'] == 1) || ($val['status'] == 2)) && ($val['id'] == $_SESSION['id'] && $val['session_id'] == $_SESSION['key']))
         {
-$admin_options = '';
-$admin_options = <<< AOF 
-<h3>Create New Game</h3>
-<form action='new_game.php' method='post'>
-<p>Game Name: <input type='text' name='game_name'></p>
-<p>Admin: <input type='text' name='admin_name'</p>
-<br>
-<input type='submit'>
-</form>
-$AOF;
-            //print_r($val);
-include 'navbar.php';
+
 $prnt = '';
 $prnt = <<< EOF
 <style>
@@ -61,14 +50,15 @@ td {
 </div>
 EOF;
 echo $prnt;
+break;
         }
-        elseif (/* is not admin*/) {
+      //elseif (/* is not admin*/) {
             // code...
-        }
+        //}
     }//foreach
-    
 
-    
+
+
 }
 
 $out = "";
@@ -82,7 +72,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['name']))
 else
 {
     //header('Location: login.php');
-    
+
 }
 
 echo $out;

@@ -1,30 +1,31 @@
 <?php
   include_once 'server.class.php';
-  session_start();
-  $isLoggedin = FALSE;
+  $read = new User();
+  $val = $read->data;
 
-  $debug = 1;
-  if ($debug) {
-  $read = new server();
-  $read->select('accounts');
-  $data = $read->data;
-  //print_r($data);
-  foreach ($data as $val) {
-      //echo print_r($val) . '<br>';
-      if ($val['id'] == $_SESSION['id'] && $val['session_id'] == $_SESSION['key']) {
-          $isLoggedin = TRUE;
-          //print_r($val);
-          $prnt = '';
-          $img = new Server();
-          $img->select("account_images", "*", array('account_id'), array($val['id']));
-          //echo var_dump($img->data[0]['data']);
-          $encoded_img = (!empty($img->data[0])) ? base64_encode($img->data[0]['data']) : "";
-          $img_tag = (!empty($img->data[0])) ? '<img src="data:image/png;charset=utf8;base64,'.$encoded_img.'" style=width:50px;height: 50px;">' : "";
-          $games_joined = (!empty($val['games_joined'])) ? $val['games_joined'] : 0;
-          $forum_posts = (!empty($val['total_forum_posts'])) ? $val['total_forum_posts'] : 0;
-          $forum_likes = (!empty($val['forum_likes'])) ? $val['forum_likes'] : 0;
-          $forum_dislikes = (!empty($val['forum_dislikes'])) ? $val['forum_dislikes'] : 0;
-          $msg_signature = (!empty($val['msg_signature'])) ? $val['msg_signature'] : "Signature not set.";
+  //print_r($val);
+  $prnt = '';
+  $img = new Server();
+  $img->select("account_images", "*", array('account_id'), array($val['id']));
+  //echo var_dump($img->data[0]['data']);
+  $encoded_img = (!empty($img->data[0])) ? base64_encode($img->data[0]['data']) : "";
+  $img_tag = (!empty($img->data[0])) ? '<img src="data:image/png;charset=utf8;base64,'.$encoded_img.'" style=width:50px;height: 50px;">' : "";
+  $games_joined = (!empty($val['games_joined'])) ? $val['games_joined'] : 0;
+  $forum_posts = (!empty($val['total_forum_posts'])) ? $val['total_forum_posts'] : 0;
+  $forum_likes = (!empty($val['forum_likes'])) ? $val['forum_likes'] : 0;
+  $forum_dislikes = (!empty($val['forum_dislikes'])) ? $val['forum_dislikes'] : 0;
+  $msg_signature = (!empty($val['msg_signature'])) ? $val['msg_signature'] : "Signature not set.";
+
+  $admin_options = '';
+  if($val['status'] == 1 || $val['status'] == 2){
+  $admin_options = "<tr><form action='new_game.php' method='post'><td>Create New Game:<br>Name: <input type='text' name='game_name'><br><input type='submit'></td></form>";
+
+  //NOTICE: Compiles fine on my local environment. Does not deploy
+  $admin_options .= ($val['status'] != 1) ? "" : "<form action='server.php' method='post'><td><input type='submit' name='reset' value='RESET SERVER' onClick='confirm(\"Are you sure? This cannot be undone.\");'></td></form>";
+
+  $admin_options .= "</tr>";
+  }
+
 include 'navbar.php';
 $prnt = <<< EOF
 <style>
@@ -73,18 +74,11 @@ UPLOAD NEW IMAGE: <br>
 <input type='file' name='plyr_img' id='plyr_img'>
 </td>
 </tr>
-<tr><td colspan='2'><input type='submit' value='Update Account' name='submit'><td></tr>
+<tr><td colspan='2'><input type='submit' value='Update Account' name='submit'></td></tr>
 </form>
+{$admin_options}
 </table>
 </div>
 EOF;
 echo $prnt;
-break;
-    }
-  }
-  if(!$isLoggedin){
-    //header('Location: login.php');
-    echo "not";
-  }
-}
 ?>
