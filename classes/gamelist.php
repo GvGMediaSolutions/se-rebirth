@@ -47,28 +47,40 @@ td {
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script>
   // do fancy stuff on form submit
-  $(document).on('submit', '#chat-form', function(e)
-  {
-    // stop normal page execution of form values
-    e.preventDefault();
-
-    // do ajax call to myself with post values
-    //var url = window.location.href;
-    var data = $(this).serialize(); // form data
-
-    $.post('chat.php', data, function(result)
-    {
-      $('#chat-results').html(result);
-      $('#chat-message').val('');
-    });
+  $(document).on('submit', '#chat-form', function(e) {
+  	// stop normal page execution of form values
+  	e.preventDefault();
+  	// do ajax call to myself with post values
+  	//var url = window.location.href;
+  	var data = $(this).serialize();
+  	// form data
+  	$.post('chat.php', data, function(result)
+  	{
+  		$('#chat-results').html(result);
+  		$('#chat-message').val('');
+  	});
   });
-
-  function doChatUpdate(){
-    $.post('chat.php', '', function(result)
-    {
-      $('#chat-results').html(result);
-      setTimeout(doChatUpdate, 1000);
-    });
+  $(document).on('mousedown', '#chat-results', function()
+  {
+  	$(this).addClass('hovering');
+  });
+  $(document).on('mouseup', '#chat-results', function()
+  {
+    $(this).addClass('hovering');
+  });
+  $(document).on('mouseout', '#chat-results', function()
+  {
+  	$(this).removeClass('hovering');
+  });
+  function doChatUpdate(interval)
+  {
+  	$.post('chat.php', '', function(result) {
+  		if (!$('#chat-results').hasClass('hovering'))
+  		{
+  			$('#chat-results').html(result);
+  		}
+  		setTimeout(doChatUpdate(1000), interval);
+  	});
   }
   </script>
 </head>
