@@ -67,7 +67,6 @@ td {
     $.post('chat.php', '', function(result)
     {
       $('#chat-results').html(result);
-      $('#chat-message').val('');
       setTimeout(doChatUpdate, 1000);
     });
   }
@@ -81,7 +80,7 @@ td {
 <td>ACCOUNT: <br>{$val['login_name']}</td>
 <td rowspan='9'>
 <form id="chat-form">
-	<input type="text" name="chat-message" placeholder="Say something..." />
+	<input type="text" id="chat-message" name="chat-message" placeholder="Say something..." />
 	<button>Submit</button>
 </form>
 <hr />
