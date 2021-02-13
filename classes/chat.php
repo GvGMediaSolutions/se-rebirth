@@ -13,8 +13,9 @@ if (!empty($_POST))
 
 	//$sql = "INSERT INTO chat SET message = '{$message}'";
 	//execute($sql);
-  $server->insert('chat', array('message'), array($message));
-
+  if(!empty($_POST['chat-message'])){
+    $server->insert('chat', array('message'), array($message));
+  }
 	//$sql = "SELECT * FROM chat ORDER BY id DESC LIMIT 20";
 	//$chats = selectAll($sql);
   $read = new Server();
