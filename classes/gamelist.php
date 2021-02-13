@@ -35,6 +35,7 @@
 
 include 'navbar.php';
 $prnt = <<< EOF
+</head>
 <style>
 td {
     border:black solid 1px;
@@ -43,11 +44,50 @@ td {
     text-align:center;
 }
 </style>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script>
+  // do fancy stuff on form submit
+  $(document).on('submit', '#chat-form', function(e)
+  {
+    // stop normal page execution of form values
+    e.preventDefault();
+
+    // do ajax call to myself with post values
+    //var url = window.location.href;
+    var data = $(this).serialize(); // form data
+
+    $.post('chat.php', data, function(result)
+    {
+      $('#chat-results').html(result);
+      $('#chat-message').val('');
+    });
+  });
+
+  function doChatUpdate(){
+    $.post('chat.php', '', function(result)
+    {
+      $('#chat-results').html(result);
+      $('#chat-message').val('');
+      setTimeout(doChatUpdate, 1000);
+    });
+  }
+  </script>
+</head>
+<body onLoad='doChatUpdate();'>
 <div >
 <table >
 <tr>
 <td>ID: <br>{$val['id']}</td>
 <td>ACCOUNT: <br>{$val['login_name']}</td>
+<td rowspan='9'>
+<form id="chat-form">
+	<input type="text" name="chat-message" placeholder="Say something..." />
+	<button>Submit</button>
+</form>
+<hr />
+<div id="chat-results">
+</div>
+</td>
 </tr>
 <tr>
 <td>DATE JOINED: <br>{$val['date_created']}</td>
@@ -86,6 +126,8 @@ UPLOAD NEW IMAGE: <br>
 {$admin_options}
 </table>
 </div>
+</body>
+</html>
 EOF;
 echo $prnt;
 ?>
