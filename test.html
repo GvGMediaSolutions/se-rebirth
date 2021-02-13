@@ -182,10 +182,10 @@
           //console.log(p);
 					this.x = -canvas.elem.offsetLeft + p.clientX * canvas.width / canvas.elem.offsetWidth;
 					this.y = -canvas.elem.offsetTop + p.clientY * canvas.height / canvas.elem.offsetHeight;
-          //console.log(-canvas.elem.offsetLeft + " + " + p.clientX + " * " + canvas.width + " / " + canvas.elem.offsetWidth);
-          //console.log(this.x);
-          //console.log(-canvas.elem.offsetTop + " + " + p.clientY + " * " + canvas.height + " / " + canvas.elem.offsetHeight);
-          //console.log(this.y);
+          console.log(-canvas.elem.offsetLeft + " + " + p.clientX + " * " + canvas.width + " / " + canvas.elem.offsetWidth);
+          console.log(this.x);
+          console.log(-canvas.elem.offsetTop + " + " + p.clientY + " * " + canvas.height + " / " + canvas.elem.offsetHeight);
+          console.log(this.y);
 				},
 				lerp() {
 					this.cx += (this.x - this.cx) * 0.1;
@@ -194,17 +194,18 @@
 			};
 
       window.addEventListener('keydown', (e) => {
+        var speed = 10;
         if(e.key == "ArrowUp"){
-          pointer.move({"clientX": pointer.x, "clientY": pointer.y});
+          pointer.move({"clientX": (-canvas.elem.offsetLeft + pointer.x) / canvas.width * canvas.elem.offsetWidth, "clientY": ((canvas.elem.offsetTop + pointer.y) / canvas.height * canvas.elem.offsetHeight)-speed});
         }
         if(e.key == "ArrowDown"){
-          pointer.move({"clientX": pointer.x, "clientY": pointer.y});
+          pointer.move({"clientX": (-canvas.elem.offsetLeft + pointer.x) / canvas.width * canvas.elem.offsetWidth, "clientY": ((canvas.elem.offsetTop + pointer.y) / canvas.height * canvas.elem.offsetHeight)+speed});
         }
         if(e.key == "ArrowRight"){
-          pointer.move({"clientX": pointer.x, "clientY": pointer.y});
+          pointer.move({"clientX": ((canvas.elem.offsetLeft + pointer.x) / canvas.width * canvas.elem.offsetWidth)+speed, "clientY": (canvas.elem.offsetTop + pointer.y) / canvas.height * canvas.elem.offsetHeight});
         }
         if(e.key == "ArrowLeft"){
-          pointer.move({"clientX": pointer.x, "clientY": pointer.y});
+          pointer.move({"clientX": ((canvas.elem.offsetLeft + pointer.x) / canvas.width * canvas.elem.offsetWidth)-speed, "clientY": (canvas.elem.offsetTop + pointer.y) / canvas.height * canvas.elem.offsetHeight});
         }
 
         //console.log((canvas.elem.offsetLeft + pointer.x / canvas.width * canvas.elem.offsetWidth));
