@@ -72,14 +72,14 @@ td {
   {
   	$(this).removeClass('hovering');
   });
-  function doChatUpdate(interval)
+  function doChatUpdate()
   {
   	$.post('chat.php', '', function(result) {
   		if (!$('#chat-results').hasClass('hovering'))
   		{
   			$('#chat-results').html(result);
   		}
-  		setTimeout(doChatUpdate(1000), interval);
+  		setTimeout(doChatUpdate, 1000);
   	});
   }
   </script>
